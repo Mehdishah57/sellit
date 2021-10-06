@@ -7,6 +7,8 @@ import auth from './../middlewares/auth';
 import authAdv from './../middlewares/authAdv';
 import getAds from './../controllers/products/getAds';
 import search from './../controllers/products/search';
+import activate from './../controllers/products/activate';
+import deactivate from './../controllers/products/deactivate';
 
 const router = Router();
 
@@ -20,6 +22,10 @@ router.get("/:id", getById);
 router.post("/add", auth, authAdv, add);
 //Update Ads
 router.patch("/:id", auth, authAdv, update);
+//activate Ad
+router.put("/activate/:id", auth, authAdv, activate);
+//deactivate Ad
+router.put("/deactivate/:id", auth, authAdv, deactivate);
 //Delete Ads By Id
 router.delete("/:id", auth, authAdv, delById);
 

@@ -10,7 +10,7 @@ const getAds = handleError(async(req, res) => {
     const products = await Product.find().limit(20);
     return res.status(200).send(products);
   }
-  const product = await Product.find().skip(pageSize*(pageNumber-1)).limit(pageSize).populate("owner", "name email phone");
+  const product = await Product.find({active: true}).skip(pageSize*(pageNumber-1)).limit(pageSize).populate("owner", "name email phone");
   res.status(200).send(product);
 });
 
