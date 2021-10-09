@@ -15,7 +15,7 @@ var getRoutes = function (app) {
     app.use(express_1.default.json());
     app.use(express_fileupload_1.default());
     app.use(cors_1.default({
-        origin: "http://192.168.18.4:3000",
+        origin: process.env.CORS_ORIGIN,
         credentials: true, optionsSuccessStatus: 200
     }));
     app.use(cookie_parser_1.default());

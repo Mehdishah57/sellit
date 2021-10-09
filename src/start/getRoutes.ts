@@ -12,7 +12,7 @@ const getRoutes = (app: Express) => {
     app.use(express.json());
     app.use(fileUpload());
     app.use(cors({
-        origin: "http://192.168.18.4:3000", 
+        origin: process.env.CORS_ORIGIN, 
         credentials:true,optionsSuccessStatus: 200 
     }));
     app.use(cookieParser());
