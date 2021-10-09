@@ -1,0 +1,26 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.io = void 0;
+var express_1 = __importDefault(require("express"));
+var dotenv_1 = __importDefault(require("dotenv"));
+var getRoutes_1 = __importDefault(require("./start/getRoutes"));
+var databaseConnect_1 = __importDefault(require("./start/databaseConnect"));
+var getEnvVars_1 = __importDefault(require("./start/getEnvVars"));
+var http_1 = __importDefault(require("http"));
+var initSocket_1 = __importDefault(require("./start/initSocket"));
+var message_1 = __importDefault(require("./messages/message"));
+var socketAuth_1 = __importDefault(require("./middlewares/socketAuth"));
+var app = express_1.default();
+dotenv_1.default.config();
+getEnvVars_1.default();
+databaseConnect_1.default();
+getRoutes_1.default(app);
+var PORT = process.env.PORT || 3600;
+var server = http_1.default.createServer(app).listen({ port: PORT }, function () { return console.log("Server Started"); });
+var io = initSocket_1.default(server);
+exports.io = io;
+io.use(socketAuth_1.default);
+message_1.default(io);

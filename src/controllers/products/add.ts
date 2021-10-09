@@ -11,7 +11,7 @@ const add = handleError(async (req, res) => {
     subCategories: { $in: [req.body.category] },
   });
   if (!category.length) return res.status(400).send("Invalid Category");
-  const { title, price, description, owner, category:userCat } = req.body;
+  const { title, price, description, owner, category:userCat, mainCategory, country, city } = req.body;
   let picture: any = {};
   const imageKeys = Object.keys(req.body.picture);
   for (let key in imageKeys){
@@ -22,17 +22,17 @@ const add = handleError(async (req, res) => {
     picture[imageKeys[key]] = {url:url.webContentLink,id};
   }
   const product = new Product({
-    title,price,description,owner,category:userCat,picture
+    title,price,description,owner,category:userCat,picture, mainCategory, country, city
   });
   try {
     await product.save();
     res.status(200).send("Product Saved Successfully");
-  } catch (error) {
+  } catch (error: any) {
     console.log(error)
-    // if(error.errors) {
-    //   const keys = Object.keys(error.errors)
-    //   return res.status(500).send(error.errors[keys[0]].message);
-    // }
+    if(error.errors) {
+      const keys = Object.keys(error.errors)
+      return res.status(500).send(error.errors[keys[0]].message);
+    }
     res.status(500).send("Couldn't save Product" + error);
   }
 });
