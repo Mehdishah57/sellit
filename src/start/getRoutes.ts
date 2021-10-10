@@ -17,7 +17,7 @@ const getRoutes = (app: Express) => {
         credentials:true,optionsSuccessStatus: 200 
     }));
     app.use(cookieParser());
-    app.use(setHeaders());
+    app.use(setHeaders);
     app.use("/api/user" , user);
     app.use("/api/product", product);
     app.use("/api/category", category)
