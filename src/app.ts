@@ -17,7 +17,7 @@ getRoutes(app);
 
 
 const PORT = process.env.PORT || 3600;
-const server = http.createServer(app).listen({port: PORT,hostName:`${process.env.HOST_NAME}`},()=>console.log("Server Started"));
+const server = http.createServer(app).listen({port: PORT},()=>console.log("Server Started"));
 
 const io = initSocket(server);
 io.use(socketAuth);

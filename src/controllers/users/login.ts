@@ -16,7 +16,7 @@ const login = handleError(async(req,res) => {
     user.clientIdentity = ultraHash;
     await user.save();
     const { _id, name, picture } = user;
-    res.cookie('authtoken',token, {maxAge:2505600000, httpOnly: true});
+    res.cookie('authtoken',token, {maxAge:2505600000, httpOnly: true, sameSite:"none", secure:true});
     res.status(200).send({_id, name, email, picture,clientIdentity: hash});
 });
 

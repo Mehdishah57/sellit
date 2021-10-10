@@ -7,7 +7,6 @@ import product from "../routes/product";
 import category from "../routes/category";
 import country from "../routes/country";
 import fileUpload from "express-fileupload";
-import setHeaders from '../middlewares/setHeaders';
 
 const getRoutes = (app: Express) => {
     app.use(express.json());
@@ -17,7 +16,6 @@ const getRoutes = (app: Express) => {
         credentials:true,optionsSuccessStatus: 200 
     }));
     app.use(cookieParser());
-    app.use(setHeaders);
     app.use("/api/user" , user);
     app.use("/api/product", product);
     app.use("/api/category", category)
