@@ -15,10 +15,10 @@ async function uploadToDrive(image: any, drive: any) {
       },
     })
     let url = await getUrl(response.data.id, drive);
-    return {url, id:response.data.id};
+    return { url, id: response.data.id };
   } catch (error) {
     console.error(error);
-    return { error , url: null, id: null}
+    return { error, url: null, id: null }
   }
 }
 
@@ -27,10 +27,10 @@ async function deleteFile(id: string, drive: drive_v3.Drive) {
     const response = await drive.files.delete({
       fileId: id
     })
-    return {success:"success",error:null};
+    return { success: "success", error: null };
   } catch (error) {
     console.error(error);
-    return {success:null, error};
+    return { success: null, error };
   }
 }
 
@@ -53,13 +53,15 @@ async function getUrl(id: string, drive: drive_v3.Drive) {
   }
 }
 
-const uploadImage = async(file: any) => {
-  const dir = `${__dirname}/publicimgs/`
-  if(!fs.existsSync(dir)) fs.mkdirSync(dir);
-  await file.mv(`${dir}/${file.name}`,async(err: any)=>{
-    if(err) return console.log(err);
-  });
-  const CLIENT_ID = process.env.CLIENT_ID;
+const uploadImage = async (file: any) => {
+  try {
+    const dir = `${__dirname}/publicimgs/`
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+    // await file.mv(`${dir}/${file.name}`, async (err: any) => {
+    //   if (err) return { url: null, id: null, error: err };
+    // });
+    await file.mv(`${dir}/${file.name}`);
+    const CLIENT_ID = process.env.CLIENT_ID;
     const CLIENT_SECRET = process.env.CLIENT_SECRET;
     const REDIRECT_URI = process.env.REDIRECT_URI;
     const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
@@ -82,6 +84,9 @@ const uploadImage = async(file: any) => {
     });
 
     return await uploadToDrive(file, drive);
+  } catch (error: any) {
+    return { url: null, id: null, error }
+  }
 }
 
 export default uploadImage;

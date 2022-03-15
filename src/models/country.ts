@@ -1,11 +1,21 @@
-import { Schema, model } from "mongoose";
+import { Prop, getModelForClass } from "@typegoose/typegoose";
 
-const countrySchema = new Schema({
-  name: { type: String, required: true },
-  cities: [String]
-});
+class Countries {
+  @Prop({ type: String, required: true })
+  public name!: string
 
-const Country = model("Country", countrySchema);
+  @Prop({ type: Array })
+  public cities!: any[]
+}
+
+const Country = getModelForClass(Countries, { schemaOptions: { collection: "countries" } });
+
+// const countrySchema = new Schema({
+//   name: { type: String, required: true },
+//   cities: [String]
+// });
+
+// const Country = model("Country", countrySchema);
 
 export {
   Country

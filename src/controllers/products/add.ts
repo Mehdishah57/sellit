@@ -15,10 +15,16 @@ const add = handleError(async (req, res) => {
   let picture: any = {};
   const imageKeys = Object.keys(req.body.picture);
   for (let key in imageKeys){
-    const {url, id} = await uploadImage(req.body.picture[imageKeys[key]])
+    const picName= req.body.picture[imageKeys[key]].name;
+    const picExtension = picName.slice(picName.indexOf("."));
+    const completeName = imageKeys[key] + picExtension;
+    req.body.picture[imageKeys[key]].name = completeName;
     //@ts-ignore
-    // picture.push({[imageKeys[key]]:{url:url.webContentLink,id}});
-    //@ts-ignore
+    const {url, id} = await uploadImage(req.body.picture[imageKeys[key]]);
+    if(!url||!id){
+      throw new Error("Image Upload Issue")
+    }
+    
     picture[imageKeys[key]] = {url:url.webContentLink,id};
   }
   const product = new Product({
@@ -33,7 +39,7 @@ const add = handleError(async (req, res) => {
       const keys = Object.keys(error.errors)
       return res.status(500).send(error.errors[keys[0]].message);
     }
-    res.status(500).send("Couldn't save Product" + error);
+    res.status(500).send({message: "Couldn't save Product",error});
   }
 });
 

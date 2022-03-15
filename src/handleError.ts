@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-const handleError = (callback: (req: Request,res: Response) => void) => {
+const handleError = (callback: (req: Request,res: Response) => Promise<any>) => {
     return async (req: Request,res: Response,next: NextFunction) => {
         try {
             await callback(req,res);

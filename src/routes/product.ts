@@ -19,7 +19,7 @@ router.get("/getAllAds", getAds);
 //Get Ads By Id
 router.get("/:id", getById);
 //Add new Ads
-router.post("/add", auth, authAdv, add);
+router.post("/add",  add);
 //Update Ads
 router.patch("/:id", auth, authAdv, update);
 //activate Ad

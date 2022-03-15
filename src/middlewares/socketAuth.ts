@@ -6,6 +6,7 @@ const socketAuth = async(socket:any, next:any) => {
   const token = cookie.substring(10);
     try {
         const user = jwt.verify(token , process.env.jwtPrivateKey!);
+        socket.user = user;
         next();
     } catch (error) {
         next(new Error("Invalid Token"));

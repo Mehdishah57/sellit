@@ -1,11 +1,22 @@
-import mongoose from "mongoose";
+import { getModelForClass, Prop } from '@typegoose/typegoose';
+// import mongoose from "mongoose";
 
-const categorySchema = new mongoose.Schema({
-  name: {type: String, required:true},
-  subCategories: {type: Array}
-});
+class Categories {
+  @Prop({ type: String, required: true })
+  public name!: string
 
-const Category = mongoose.model("Category", categorySchema);
+  @Prop({ type: Array })
+  public subCategories?: string[]
+}
+
+const Category = getModelForClass(Categories, { schemaOptions: { collection: "categories" } })
+
+// const categorySchema = new mongoose.Schema({
+//   name: {type: String, required:true},
+//   subCategories: {type: Array}
+// });
+
+// const Category = mongoose.model("Category", categorySchema);
 
 export {
   Category

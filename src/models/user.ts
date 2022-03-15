@@ -1,22 +1,52 @@
-import { Schema, model } from "mongoose";
+import { getModelForClass, Prop } from "@typegoose/typegoose";
 import Jwt from "jsonwebtoken";
 import joi from "joi";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 
-const userSchema = new Schema({
-  name: {type: String, required: true},
-  email: {type: String, required:true},
-  password: {type: String, maxLength:2048, required: true},
-  phone: {type: String, required: true},
-  picture: {
-    url: { type: String },
-    id: { type: String }
-  },
-  clientIdentity: {type: String}
-});
+class Picture {
+  @Prop({ type: String })
+  public url?: string
 
-const User = model('User', userSchema);
+  @Prop({ type: String })
+  public id?: string
+}
+
+class User {
+  @Prop({ type: String, required: true })
+  public name!: string
+
+  @Prop({ type: String, required: true})
+  public email!: string
+
+  @Prop({ type: String, maxlength: 2048 , required: true})
+  public password!: string
+
+  @Prop({ type: String, required: true})
+  public phone!: string
+
+  @Prop({ type: Picture, _id: false })
+  public picture?: Picture
+
+  @Prop({ type: String , default: ""})
+  public clientIdentity!: string
+}
+
+const UserModel = getModelForClass(User,{ schemaOptions: {collection: "users"} });
+
+// const userSchema = new Schema({
+//   name: {type: String, required: true},
+//   email: {type: String, required:true},
+//   password: {type: String, maxLength:2048, required: true},
+//   phone: {type: String, required: true},
+//   picture: {
+//     url: { type: String },
+//     id: { type: String }
+//   },
+//   clientIdentity: {type: String}
+// });
+
+// const User = model('User', userSchema);
 
 const genToken = (user: any) => {
   const token = Jwt.sign({_id: user._id, name: user.name, email: user.email, isAdmin: user.isAdmin, picture: user.picture}, process.env.jwtPrivateKey!, {expiresIn: "24h"});
@@ -43,5 +73,5 @@ const validateUser = (user: any) => {
 }
 
 export {
-  User, validateUser, genToken, genUserIdentifier
+  UserModel as User, validateUser, genToken, genUserIdentifier, User as UserClass
 }
